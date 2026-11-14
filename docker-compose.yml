@@ -10,6 +10,7 @@ x-aml-service: &aml-service
     LOCAL_MONGO_URI: mongodb://mongo-local:27017
     ATLAS_URI: ${ATLAS_URI:-mongodb://mongo-local:27017}
     DATA_DIR: /data
+    KAGGLEHUB_CACHE: /data/.kagglehub
   volumes:
     - raw-data:/data
 
@@ -25,6 +26,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 12
+
+  dataset-extractor:
+    <<: *aml-service
+    command: python -m aml_etl.dataset_extractor
 
 volumes:
   mongo-local-data:

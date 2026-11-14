@@ -5,6 +5,7 @@ description = "AML transactions ETL pipeline with exchange-rate scraping, analyt
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "colorama>=0.4.6",
+    "kagglehub>=1.0.3",
     "pydantic-settings",
     "pymongo>=4.20.0",
 ]
@@ -38,6 +39,10 @@ select = ["E", "F", "W", "I", "B", "UP", "SIM", "N", "RUF", "PTH", "ERA"]
 strict = true
 plugins = ["pydantic.mypy"]
 exclude = ["scripts/tests"]
+
+[[tool.mypy.overrides]]
+module = ["kagglehub", "kagglehub.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 addopts = "--import-mode=importlib"
