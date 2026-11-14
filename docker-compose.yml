@@ -40,6 +40,15 @@ services:
       mongo-local:
         condition: service_healthy
 
+  transactions-etl:
+    <<: *aml-service
+    command: python -m aml_etl.transactions_etl
+    depends_on:
+      rates-scraper:
+        condition: service_completed_successfully
+      mongo-local:
+        condition: service_healthy
+
 volumes:
   mongo-local-data:
   raw-data:
