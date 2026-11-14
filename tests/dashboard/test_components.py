@@ -68,3 +68,10 @@ def test_style_figure_applies_theme():
     figure = style_figure(go.Figure())
     assert figure.layout.font.family == FONT_FAMILY
     assert figure.layout.paper_bgcolor == "rgba(0,0,0,0)"
+
+
+def test_statistic_is_written_without_computer_notation():
+    assert components.format_statistic(289064511.5) == "2,89·10⁸"
+    assert components.format_statistic(4.1e11) == "4,1·10¹¹"
+    assert components.format_statistic(12.5) == "12,5"
+    assert components.format_statistic(1234.0) == "1 234"

@@ -1,3 +1,5 @@
+import time
+
 import pytest
 from pymongo.errors import ServerSelectionTimeoutError
 from support.results import sample_result, sample_summary
@@ -51,3 +53,11 @@ def test_from_settings_does_not_need_a_reachable_database():
     settings = AmlSettings(_env_file=None, atlas_uri="mongodb://localhost:1", mongo_timeout_ms=300)
     source = AtlasDashboardDataSource.from_settings(settings)
     assert source.is_connected() is False and source.published_variants() == []
+
+
+def test_dashboard_gives_up_on_unreachable_database_quickly():
+    settings = AmlSettings(_env_file=None, atlas_uri="mongodb://localhost:1")
+    source = AtlasDashboardDataSource.from_settings(settings)
+    started = time.monotonic()
+    assert source.is_connected() is False
+    assert time.monotonic() - started < 5

@@ -11,6 +11,8 @@ from aml_etl.common.settings import AmlSettings
 
 logger = logging.getLogger(__name__)
 
+DASHBOARD_TIMEOUT_MS = 3_000
+
 
 class DashboardDataSource(Protocol):
     def is_connected(self) -> bool: ...
@@ -34,7 +36,8 @@ class AtlasDashboardDataSource:
         client: MongoClient[dict[str, Any]] = MongoClient(
             settings.atlas_uri,
             tz_aware=True,
-            serverSelectionTimeoutMS=settings.mongo_timeout_ms,
+            serverSelectionTimeoutMS=min(settings.mongo_timeout_ms, DASHBOARD_TIMEOUT_MS),
+            connectTimeoutMS=DASHBOARD_TIMEOUT_MS,
             appname="aml-etl-dashboard",
         )
         logger.info("Dashboard reads from %s", redact_uri(settings.atlas_uri))

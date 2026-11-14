@@ -56,6 +56,17 @@ services:
       transactions-etl:
         condition: service_completed_successfully
 
+  dashboard:
+    <<: *aml-service
+    command: gunicorn aml_etl.dashboard.wsgi:server --bind 0.0.0.0:8050 --workers 2
+    ports:
+      - "${DASHBOARD_HOST_PORT:-8050}:8050"
+    depends_on:
+      analytics:
+        condition: service_completed_successfully
+        required: false
+    restart: unless-stopped
+
 volumes:
   mongo-local-data:
   raw-data:

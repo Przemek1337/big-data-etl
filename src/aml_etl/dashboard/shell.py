@@ -8,6 +8,7 @@ from dash import dcc, html
 Section = Literal["main", "analyses", "data"]
 
 VARIANT_SELECTOR_ID = "variant-selector"
+BREADCRUMB_ID = "breadcrumb"
 SECTION_LABELS: dict[Section, str | None] = {"main": None, "analyses": "Analizy", "data": "Dane"}
 IMPORT_TIME_FORMAT = "%d.%m.%Y, %H:%M"
 
@@ -81,7 +82,7 @@ def sidebar(active_path: str, atlas_connected: bool, last_import_at: datetime | 
 def topbar(breadcrumb: str, variants: Sequence[str], selected: str | None) -> html.Header:
     return html.Header(
         [
-            html.Div(html.B(breadcrumb), className="crumb"),
+            html.Div(html.B(breadcrumb, id=BREADCRUMB_ID), className="crumb"),
             html.Div(
                 dcc.RadioItems(
                     id=VARIANT_SELECTOR_ID,

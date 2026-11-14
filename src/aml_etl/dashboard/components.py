@@ -9,6 +9,8 @@ from aml_etl.common.formatting import format_decimal
 from aml_etl.common.results import StatisticalTest
 
 SMALLEST_REPORTED_P_VALUE = 0.001
+LARGE_STATISTIC = 100_000
+SUPERSCRIPTS = str.maketrans("-0123456789", "⁻⁰¹²³⁴⁵⁶⁷⁸⁹")
 
 
 @dataclass(frozen=True)
@@ -104,7 +106,11 @@ def format_p_value(p_value: float) -> str:
 
 
 def format_statistic(statistic: float) -> str:
-    return f"{statistic:.3g}".replace(".", ",")
+    if abs(statistic) < LARGE_STATISTIC:
+        return format_decimal(statistic, 1).removesuffix(",0")
+    mantissa, exponent = f"{statistic:.2e}".split("e")
+    digits = mantissa.rstrip("0").rstrip(".").replace(".", ",")
+    return f"{digits}·10{str(int(exponent)).translate(SUPERSCRIPTS)}"
 
 
 def test_note(test: StatisticalTest, plain_explanation: str) -> html.Div:
