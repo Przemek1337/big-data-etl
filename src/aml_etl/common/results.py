@@ -61,6 +61,10 @@ class ResultsRepository:
         self._results = database[AtlasCollection.ANALYSIS_RESULTS]
         self._summaries = database[AtlasCollection.DATASET_SUMMARY]
         self._catalog = database[AtlasCollection.DATASET_CATALOG]
+        self._database = database
+
+    def ping(self) -> None:
+        self._database.command("ping")
 
     def publish_variant(self, summary: DatasetSummary, results: Sequence[AnalysisResult]) -> None:
         for result in results:
