@@ -7,7 +7,9 @@ name = "aml-etl"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "colorama" },
     { name = "pydantic-settings" },
+    { name = "pymongo" },
 ]
 
 [package.dev-dependencies]
@@ -17,10 +19,15 @@ dev = [
     { name = "pytest" },
     { name = "ruff" },
     { name = "testcontainers", extra = ["mongodb"] },
+    { name = "types-colorama" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "pydantic-settings" }]
+requires-dist = [
+    { name = "colorama", specifier = ">=0.4.6" },
+    { name = "pydantic-settings" },
+    { name = "pymongo", specifier = ">=4.20.0" },
+]
 
 [package.metadata.requires-dev]
 dev = [
@@ -29,6 +36,7 @@ dev = [
     { name = "pytest" },
     { name = "ruff" },
     { name = "testcontainers", extras = ["mongodb"] },
+    { name = "types-colorama", specifier = ">=0.4.15.20260508" },
 ]
 
 [[package]]
@@ -549,6 +557,15 @@ wheels = [
 [package.optional-dependencies]
 mongodb = [
     { name = "pymongo" },
+]
+
+[[package]]
+name = "types-colorama"
+version = "0.4.15.20260508"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/be/d5/4870d88c6c87adf786ef33d674cbf82b3a2d5fcbe6deec29282cff80e8b3/types_colorama-0.4.15.20260508.tar.gz", hash = "sha256:3a8916039e57452bd21f57e674e1f221ca9e4f319893c5e3bbd37b845c27d8e6", size = 10638, upload-time = "2026-05-08T04:47:14.593Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/56/33/a3449e3e93c43861b92d0a93ed4ea5505756463e507625812cfb29c91c7a/types_colorama-0.4.15.20260508-py3-none-any.whl", hash = "sha256:b0c39908a3e5171ef1f8bf3d59fae082e9eaff3a19ca49b6d640b83f78cff61c", size = 10755, upload-time = "2026-05-08T04:47:13.761Z" },
 ]
 
 [[package]]
