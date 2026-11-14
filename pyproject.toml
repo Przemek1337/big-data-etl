@@ -7,9 +7,11 @@ dependencies = [
     "colorama>=0.4.6",
     "httpx>=0.28.1",
     "kagglehub>=1.0.3",
+    "numpy>=2.5.4",
     "polars>=2.1.0",
     "pydantic-settings",
     "pymongo>=4.20.0",
+    "scipy>=1.18.1",
     "selectolax>=1.0.2",
     "tzdata>=2026.6",
 ]
@@ -29,6 +31,7 @@ dev = [
     "testcontainers[mongodb]",
     "pre-commit",
     "types-colorama>=0.4.15.20260508",
+    "scipy-stubs>=1.18.1.1",
 ]
 
 [tool.ruff]
