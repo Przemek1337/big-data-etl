@@ -39,6 +39,10 @@ extend-exclude = ["docs"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "N", "RUF", "PTH", "ERA"]
 
+[tool.ruff.lint.isort]
+known-first-party = ["aml_etl"]
+known-third-party = ["support"]
+
 [tool.mypy]
 strict = true
 plugins = ["pydantic.mypy"]
