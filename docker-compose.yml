@@ -31,6 +31,15 @@ services:
     <<: *aml-service
     command: python -m aml_etl.dataset_extractor
 
+  rates-scraper:
+    <<: *aml-service
+    command: python -m aml_etl.rates_scraper
+    depends_on:
+      dataset-extractor:
+        condition: service_completed_successfully
+      mongo-local:
+        condition: service_healthy
+
 volumes:
   mongo-local-data:
   raw-data:

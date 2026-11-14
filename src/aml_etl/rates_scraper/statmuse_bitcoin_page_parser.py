@@ -8,6 +8,7 @@ from aml_etl.rates_scraper.x_rates_page_parser import PageLayoutError
 
 STATMUSE_WINDOW_DAYS = 15
 DATE_FORMAT = "%B %d %Y"
+HOURLY_FORMAT = "%B %d %Y %H:%M"
 
 
 def _url_date(value: date) -> str:
@@ -36,26 +37,35 @@ class StatMuseBitcoinPageParser:
     def _rates(
         self, rows: list[list[str]], date_column: int, close_column: int, source_url: str
     ) -> list[ExchangeRate]:
-        rates: list[ExchangeRate] = []
+        latest: dict[date, tuple[datetime, float]] = {}
         for cells in rows:
             if len(cells) <= max(date_column, close_column) or not cells[date_column]:
                 continue
             try:
-                rate_date = datetime.strptime(cells[date_column], DATE_FORMAT).date()
+                moment = self._moment(cells[date_column])
                 close = float(cells[close_column].replace("$", "").replace(",", ""))
             except ValueError as error:
                 raise PageLayoutError(
                     f"Unreadable Bitcoin row {cells!r} at {source_url}"
                 ) from error
-            rates.append(
-                ExchangeRate(
-                    currency=Currency.BTC,
-                    rate_date=rate_date,
-                    usd_per_unit=close,
-                    source=RateSource.STATMUSE,
-                    source_url=source_url,
-                )
-            )
-        if not rates:
+            current = latest.get(moment.date())
+            if current is None or moment > current[0]:
+                latest[moment.date()] = (moment, close)
+        if not latest:
             raise PageLayoutError(f"Bitcoin table has no rows at {source_url}")
-        return rates
+        return [
+            ExchangeRate(
+                currency=Currency.BTC,
+                rate_date=rate_date,
+                usd_per_unit=close,
+                source=RateSource.STATMUSE,
+                source_url=source_url,
+            )
+            for rate_date, (_, close) in latest.items()
+        ]
+
+    def _moment(self, text: str) -> datetime:
+        try:
+            return datetime.strptime(text, HOURLY_FORMAT)
+        except ValueError:
+            return datetime.strptime(text, DATE_FORMAT)
