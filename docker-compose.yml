@@ -49,6 +49,13 @@ services:
       mongo-local:
         condition: service_healthy
 
+  analytics:
+    <<: *aml-service
+    command: python -m aml_etl.analytics
+    depends_on:
+      transactions-etl:
+        condition: service_completed_successfully
+
 volumes:
   mongo-local-data:
   raw-data:

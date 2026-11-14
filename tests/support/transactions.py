@@ -5,6 +5,11 @@ from typing import Any
 _row_numbers = itertools.count()
 
 
+def reset_row_numbers() -> None:
+    global _row_numbers
+    _row_numbers = itertools.count()
+
+
 def transaction_doc(**overrides: Any) -> dict[str, Any]:
     row_number = next(_row_numbers)
     document: dict[str, Any] = {

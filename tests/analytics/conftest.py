@@ -4,6 +4,7 @@ from typing import Any
 import pytest
 from pymongo.collection import Collection
 from pymongo.database import Database
+from support.transactions import reset_row_numbers
 
 Seed = Callable[[list[dict[str, Any]]], Collection[dict[str, Any]]]
 
@@ -17,3 +18,8 @@ def seed(mongo_database: Database[dict[str, Any]]) -> Seed:
         return collection
 
     return insert
+
+
+@pytest.fixture(autouse=True)
+def fresh_row_numbers() -> None:
+    reset_row_numbers()
