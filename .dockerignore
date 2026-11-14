@@ -1,0 +1,9 @@
+data/
+.venv/
+.git/
+spike/
+.superpowers/
+.idea/
+**/__pycache__
+tests/
+docs/

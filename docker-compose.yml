@@ -1,0 +1,31 @@
+x-aml-service: &aml-service
+  image: aml-etl:local
+  build:
+    context: .
+    dockerfile: docker/Dockerfile
+  env_file:
+    - path: .env
+      required: false
+  environment: &aml-environment
+    LOCAL_MONGO_URI: mongodb://mongo-local:27017
+    ATLAS_URI: ${ATLAS_URI:-mongodb://mongo-local:27017}
+    DATA_DIR: /data
+  volumes:
+    - raw-data:/data
+
+services:
+  mongo-local:
+    image: mongo:7.0
+    ports:
+      - "${LOCAL_MONGO_HOST_PORT:-27018}:27017"
+    volumes:
+      - mongo-local-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  mongo-local-data:
+  raw-data:
