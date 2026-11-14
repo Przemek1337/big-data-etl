@@ -34,4 +34,5 @@ def test_configure_logging_is_idempotent():
     configure_logging("DEBUG")
     root = logging.getLogger()
     assert root.level == logging.DEBUG
-    assert [type(h.formatter) for h in root.handlers] == [ColorFormatter]
+    colored = [h for h in root.handlers if isinstance(h.formatter, ColorFormatter)]
+    assert len(colored) == 1

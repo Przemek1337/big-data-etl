@@ -30,8 +30,9 @@ class ColorFormatter(logging.Formatter):
 def configure_logging(level: str) -> None:
     colorama.just_fix_windows_console()
     root = logging.getLogger()
-    for handler in list(root.handlers):
-        root.removeHandler(handler)
+    for existing in list(root.handlers):
+        if isinstance(existing.formatter, ColorFormatter):
+            root.removeHandler(existing)
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(ColorFormatter())
     root.addHandler(handler)
