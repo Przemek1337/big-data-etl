@@ -5,9 +5,13 @@ description = "AML transactions ETL pipeline with exchange-rate scraping, analyt
 requires-python = ">=3.12,<3.13"
 dependencies = [
     "colorama>=0.4.6",
+    "httpx>=0.28.1",
     "kagglehub>=1.0.3",
+    "polars>=2.1.0",
     "pydantic-settings",
     "pymongo>=4.20.0",
+    "selectolax>=1.0.2",
+    "tzdata>=2026.6",
 ]
 
 [build-system]
