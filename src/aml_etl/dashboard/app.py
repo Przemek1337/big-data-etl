@@ -4,6 +4,12 @@ from dash import Dash, Input, Output, State, dcc, html
 from dash.development.base_component import Component
 
 from aml_etl.dashboard.data_source import DashboardDataSource
+from aml_etl.dashboard.pages.exchange_rates import (
+    RATE_CURRENCY_ID,
+    RATE_GRAPH_ID,
+    rate_figure,
+    scraped_rates,
+)
 from aml_etl.dashboard.pages.registry import (
     breadcrumb_for,
     connection_lost_state,
@@ -88,5 +94,12 @@ def create_app(source: DashboardDataSource) -> Dash:
     )
     def refresh_view(path: str | None, variant: str | None) -> Any:
         return render_view(path, variant, source)
+
+    @app.callback(
+        Output(RATE_GRAPH_ID, "figure"),
+        Input(RATE_CURRENCY_ID, "value"),
+    )
+    def refresh_rate_chart(currency: str | None) -> Any:
+        return rate_figure(scraped_rates(source.exchange_rates()), currency)
 
     return app

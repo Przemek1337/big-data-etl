@@ -44,3 +44,8 @@ def test_topbar_has_breadcrumb_and_variant_selector():
 def test_topbar_without_variants_keeps_selector_empty():
     [selector] = find_by_type(topbar("Przegląd", [], None), "RadioItems")
     assert selector.options == [] and selector.value is None
+
+
+def test_import_time_is_labelled_as_utc():
+    side = sidebar("/", True, datetime(2026, 10, 27, 21, 14, tzinfo=UTC))
+    assert "Ostatni import: 27.10.2026, 21:14 UTC" in collect_text(side)

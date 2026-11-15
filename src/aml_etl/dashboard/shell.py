@@ -10,7 +10,7 @@ Section = Literal["main", "analyses", "data"]
 VARIANT_SELECTOR_ID = "variant-selector"
 BREADCRUMB_ID = "breadcrumb"
 SECTION_LABELS: dict[Section, str | None] = {"main": None, "analyses": "Analizy", "data": "Dane"}
-IMPORT_TIME_FORMAT = "%d.%m.%Y, %H:%M"
+IMPORT_TIME_FORMAT = "%d.%m.%Y, %H:%M UTC"
 
 
 @dataclass(frozen=True)

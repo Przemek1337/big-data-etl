@@ -52,3 +52,15 @@ def test_banks_without_laundering(seed):
 
 def test_default_analyses_cover_every_analysis_id():
     assert {a.analysis_id for a in default_analyses(lambda: NOW)} == set(AnalysisId)
+
+
+@pytest.mark.integration
+def test_when_laundering_fits_in_top_one_percent_the_insight_names_the_real_share(seed):
+    docs = [transaction_doc(from_account=f"N{n}") for n in range(398)]
+    docs += [transaction_doc(from_account="L1", is_laundering=True) for _ in range(3)]
+    docs += [transaction_doc(from_account="L2", is_laundering=True)]
+    result = BankConcentrationAnalysis(lambda: NOW).compute(seed(docs), VARIANT)
+    assert result.metrics["top_1pct_accounts_laundering_share"] == pytest.approx(1.0)
+    assert result.metrics["laundering_account_share"] == pytest.approx(2 / 400)
+    assert result.metrics["top_10_accounts_laundering_share"] == pytest.approx(1.0)
+    assert result.insight == "Wszystkie transakcje prania wychodzą z 0,50% kont nadawców (2 z 400)."

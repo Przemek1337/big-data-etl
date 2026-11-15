@@ -75,3 +75,14 @@ def test_statistic_is_written_without_computer_notation():
     assert components.format_statistic(4.1e11) == "4,1·10¹¹"
     assert components.format_statistic(12.5) == "12,5"
     assert components.format_statistic(1234.0) == "1 234"
+
+
+def test_chart_container_height_follows_figure_height():
+    figure = style_figure(go.Figure())
+    figure.update_layout(height=220)
+    [graph] = find_by_type(chart_card("Dni", "tydzień", figure), "Graph")
+    assert graph.style == {"height": "220px"}
+
+
+def test_figures_use_polish_number_separators():
+    assert style_figure(go.Figure()).layout.separators == ", "

@@ -5,7 +5,16 @@ from dash.development.base_component import Component
 
 from aml_etl.dashboard.components import empty_state
 from aml_etl.dashboard.data_source import DashboardDataSource
-from aml_etl.dashboard.pages import amounts, overview
+from aml_etl.dashboard.pages import (
+    amounts,
+    banks,
+    cross_currency,
+    data_quality,
+    exchange_rates,
+    overview,
+    payment_formats,
+    time_patterns,
+)
 
 PageRenderer = Callable[[DashboardDataSource, str], Component | None]
 
@@ -20,6 +29,12 @@ class Page:
 PAGES: dict[str, Page] = {
     "/": Page(overview.TITLE, overview.render),
     "/kwoty": Page(amounts.TITLE, amounts.render),
+    "/formy-platnosci": Page(payment_formats.TITLE, payment_formats.render),
+    "/czas": Page(time_patterns.TITLE, time_patterns.render),
+    "/przewalutowania": Page(cross_currency.TITLE, cross_currency.render),
+    "/banki": Page(banks.TITLE, banks.render),
+    "/jakosc-danych": Page(data_quality.TITLE, data_quality.render, False),
+    "/kursy-walut": Page(exchange_rates.TITLE, exchange_rates.render, False),
 }
 
 

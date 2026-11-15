@@ -75,7 +75,11 @@ def chart_card(
                 ],
                 className="card-h",
             ),
-            dcc.Graph(figure=figure, config={"displayModeBar": False, "responsive": True}),
+            dcc.Graph(
+                figure=figure,
+                config={"displayModeBar": False, "responsive": True},
+                style={"height": f"{figure.layout.height}px"} if figure.layout.height else None,
+            ),
         ],
         className="card",
     )

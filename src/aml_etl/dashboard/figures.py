@@ -21,6 +21,7 @@ def style_figure(figure: go.Figure) -> go.Figure:
         margin={"l": 48, "r": 12, "t": 12, "b": 40},
         height=FIGURE_HEIGHT,
         showlegend=False,
+        separators=", ",
         hoverlabel={"font": {"family": FONT_FAMILY, "color": TEXT_COLOR}, "bgcolor": "#ffffff"},
         bargap=0.25,
     )
