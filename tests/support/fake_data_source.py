@@ -70,7 +70,7 @@ class FakeDataSource:
         return [
             ExchangeRate(Currency.EUR, date(2022, 9, 1), 1.0039, RateSource.X_RATES, "u"),
             ExchangeRate(Currency.EUR, date(2022, 9, 2), 1.0039, RateSource.X_RATES, "u", True),
-            ExchangeRate(Currency.BTC, date(2022, 9, 1), 20127.14, RateSource.STATMUSE, "u"),
+            ExchangeRate(Currency.BTC, date(2022, 9, 1), 20127.14, RateSource.COINMARKETCAP, "u"),
             ExchangeRate(Currency.USD, date(2022, 9, 1), 1.0, RateSource.FIXED, ""),
         ]
 

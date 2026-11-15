@@ -19,20 +19,6 @@ def test_days_are_inclusive():
     ]
 
 
-def test_windows_cover_range_without_overlap():
-    windows = DateRange(date(2022, 8, 25), date(2022, 9, 28)).windows(15)
-    assert windows == [
-        DateRange(date(2022, 8, 25), date(2022, 9, 8)),
-        DateRange(date(2022, 9, 9), date(2022, 9, 23)),
-        DateRange(date(2022, 9, 24), date(2022, 9, 28)),
-    ]
-
-
-def test_extended_backwards():
-    extended = DateRange(date(2022, 9, 1), date(2022, 9, 2)).extended_backwards(7)
-    assert extended == DateRange(date(2022, 8, 25), date(2022, 9, 2))
-
-
 def test_detects_range_across_files(tmp_path):
     write_csv(tmp_path / "HI-Small_Trans.csv", ["2022/09/01 00:20", "2022/09/05 10:00"])
     write_csv(tmp_path / "LI-Small_Trans.csv", ["2022/09/03 00:00", "2022/09/18 23:59"])

@@ -24,18 +24,6 @@ class DateRange:
         count = (self.end - self.start).days + 1
         return [self.start + timedelta(days=offset) for offset in range(count)]
 
-    def windows(self, days: int) -> list["DateRange"]:
-        windows: list[DateRange] = []
-        window_start = self.start
-        while window_start <= self.end:
-            window_end = min(window_start + timedelta(days=days - 1), self.end)
-            windows.append(DateRange(window_start, window_end))
-            window_start = window_end + timedelta(days=1)
-        return windows
-
-    def extended_backwards(self, days: int) -> "DateRange":
-        return DateRange(self.start - timedelta(days=days), self.end)
-
 
 class TransactionDateRangeDetector:
     def __init__(self, raw_dir: Path) -> None:

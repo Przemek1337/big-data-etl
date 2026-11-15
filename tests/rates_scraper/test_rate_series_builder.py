@@ -21,13 +21,13 @@ def test_middle_gap_is_carried_forward_and_flagged():
 
 def test_leading_gap_uses_rate_from_before_range():
     rng = DateRange(date(2022, 9, 1), date(2022, 9, 2))
-    aug31 = ExchangeRate(Currency.BTC, date(2022, 8, 31), 20000.0, RateSource.STATMUSE, "u")
+    aug31 = ExchangeRate(Currency.BTC, date(2022, 8, 31), 20000.0, RateSource.COINMARKETCAP, "u")
     result = RateSeriesBuilder().complete([aug31], rng, [Currency.BTC])
     assert [(r.rate_date.day, r.usd_per_unit, r.is_filled) for r in result] == [
         (1, 20000.0, True),
         (2, 20000.0, True),
     ]
-    assert all(r.source is RateSource.STATMUSE and r.source_url == "u" for r in result)
+    assert all(r.source is RateSource.COINMARKETCAP and r.source_url == "u" for r in result)
 
 
 def test_leading_gap_without_earlier_rate_uses_first_later_rate():

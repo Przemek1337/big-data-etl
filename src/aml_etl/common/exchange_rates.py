@@ -13,7 +13,7 @@ from aml_etl.common.currencies import Currency
 
 class RateSource(StrEnum):
     X_RATES = "x-rates"
-    STATMUSE = "statmuse"
+    COINMARKETCAP = "coinmarketcap"
     FIXED = "fixed"
 
 
