@@ -6,7 +6,7 @@ x-aml-service: &aml-service
   env_file:
     - path: .env
       required: false
-  environment: &aml-environment
+  environment:
     LOCAL_MONGO_URI: mongodb://mongo-local:27017
     ATLAS_URI: ${ATLAS_URI:-mongodb://mongo-local:27017}
     DATA_DIR: /data
