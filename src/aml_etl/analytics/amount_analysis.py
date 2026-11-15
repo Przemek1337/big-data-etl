@@ -5,6 +5,7 @@ from typing import Any
 from pymongo.collection import Collection
 from scipy import stats
 
+from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT
 from aml_etl.common.dataset_variants import DatasetVariant
 from aml_etl.common.formatting import format_decimal, format_usd
 from aml_etl.common.results import AnalysisId, AnalysisResult, StatisticalTest
@@ -13,7 +14,6 @@ PERCENTILES = (("P10", 0.1), ("P25", 0.25), ("Mediana", 0.5), ("P75", 0.75), ("P
 MEDIAN_INDEX = 2
 BINS_PER_DECADE = 4
 MANN_WHITNEY_NAME = "Mann-Whitney U"
-NO_LAUNDERING_INSIGHT = "W tym wariancie nie ma transakcji oznaczonych jako pranie."
 NO_NORMAL_INSIGHT = "W tym wariancie są wyłącznie transakcje oznaczone jako pranie."
 
 

@@ -8,7 +8,11 @@ from pymongo.collection import Collection
 
 from aml_etl.analytics.amount_analysis import AmountAnalysis
 from aml_etl.analytics.analysis import Analysis
+from aml_etl.analytics.bank_concentration_analysis import BankConcentrationAnalysis
+from aml_etl.analytics.cross_currency_analysis import CrossCurrencyAnalysis
 from aml_etl.analytics.dataset_summary_builder import DatasetSummaryBuilder
+from aml_etl.analytics.payment_format_analysis import PaymentFormatAnalysis
+from aml_etl.analytics.time_pattern_analysis import TimePatternAnalysis
 from aml_etl.common.collections import LocalCollection
 from aml_etl.common.dataset_variants import DatasetVariant
 from aml_etl.common.mongo import MongoDatabaseFactory
@@ -23,7 +27,13 @@ def utc_now() -> datetime:
 
 
 def default_analyses(clock: Callable[[], datetime]) -> list[Analysis]:
-    return [AmountAnalysis(clock)]
+    return [
+        AmountAnalysis(clock),
+        PaymentFormatAnalysis(clock),
+        TimePatternAnalysis(clock),
+        CrossCurrencyAnalysis(clock),
+        BankConcentrationAnalysis(clock),
+    ]
 
 
 class AnalyticsJob:
