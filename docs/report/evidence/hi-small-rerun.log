@@ -1,0 +1,43 @@
+# Second run of the whole pipeline on HI-Small (docker compose up -d)
+## Document counts before
+transactions=5078345 exchange_rates=270 analysis_results=5 dataset_summary=1
+ Container big-data-etl-dataset-extractor-1 Started 
+ Container big-data-etl-dataset-extractor-1 Exited 
+ Container big-data-etl-rates-scraper-1 Started 
+ Container big-data-etl-rates-scraper-1 Exited 
+ Container big-data-etl-transactions-etl-1 Started 
+ Container big-data-etl-transactions-etl-1 Exited 
+ Container big-data-etl-analytics-1 Started 
+ Container big-data-etl-analytics-1 Exited 
+ Container big-data-etl-dashboard-1 Started 
+## Service logs of the second run
+2026-11-15 11:57:49,865 | INFO     | dataset-extractor | dataset-extractor started
+2026-11-15 11:57:55,914 | INFO     | transactions-etl | transactions-etl started
+2026-11-15 11:57:49,866 | INFO     | aml_etl.dataset_extractor.raw_dataset_extractor | HI-Small_Trans.csv already extracted, skipping download
+2026-11-15 11:57:49,866 | INFO     | aml_etl.dataset_extractor.extraction_job | HI-Small_Trans.csv ready: 0.44 GB
+2026-11-15 11:57:49,866 | WARNING  | aml_etl.dataset_extractor.extraction_job | Raw data totals 0.44 GB, below the 5 GB course threshold
+2026-11-15 11:57:51,806 | INFO     | rates-scraper | rates-scraper started
+2026-11-15 11:58:02,546 | INFO     | analytics | analytics started
+2026-11-15 11:57:53,468 | INFO     | aml_etl.rates_scraper.scraping_job | Transactions span 2022-09-01 to 2022-09-18
+2026-11-15 11:58:20,781 | INFO     | aml_etl.analytics.analytics_job | HI-Small: 5078345 transactions, 5177 laundering
+2026-11-15 11:57:56,007 | INFO     | aml_etl.transactions_etl.import_job | HI-Small already imported, skipping
+2026-11-15 11:58:47,605 | INFO     | aml_etl.analytics.analytics_job | HI-Small / amounts computed in 26.8s: Typowa transakcja prania jest 6,6× większa od zwykłej (mediana $5 673 wobec $860).
+2026-11-15 11:58:55,507 | INFO     | aml_etl.analytics.analytics_job | HI-Small / payment_formats computed in 7.9s: Najwyższy odsetek prania ma forma ACH: 0,75% transakcji, czyli 7,3× więcej niż średnio.
+2026-11-15 11:59:11,381 | INFO     | aml_etl.analytics.analytics_job | HI-Small / time_patterns computed in 15.9s: Najwyższy odsetek prania przypada na godzinę 12:00–13:00: 0,17% transakcji.
+2026-11-15 11:59:19,118 | INFO     | aml_etl.analytics.analytics_job | HI-Small / cross_currency computed in 7.7s: Wśród transakcji z przewalutowaniem nie ma ani jednej oznaczonej jako pranie.
+2026-11-15 11:59:31,192 | INFO     | aml_etl.analytics.analytics_job | HI-Small / banks computed in 12.1s: Wszystkie transakcje prania wychodzą z 0,68% kont nadawców (3 376 z 496 995).
+2026-11-15 11:59:31,232 | INFO     | aml_etl.analytics.analytics_job | Published variants: HI-Small
+2026-11-15 11:59:31,233 | INFO     | analytics | analytics finished in 88.7s
+2026-11-15 11:57:56,040 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_is_laundering_1
+2026-11-15 11:57:56,041 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_payment_format_1
+2026-11-15 11:57:56,042 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_timestamp_1
+2026-11-15 11:57:56,042 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_from_bank_1
+2026-11-15 11:57:56,043 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_from_account_1
+2026-11-15 11:57:56,043 | INFO     | transactions-etl | transactions-etl finished in 0.1s
+2026-11-15 11:57:49,866 | INFO     | dataset-extractor | dataset-extractor finished in 0.0s
+2026-11-15 11:57:53,481 | INFO     | aml_etl.rates_scraper.scraping_job | Fetched 0 x-rates pages
+2026-11-15 11:57:53,483 | INFO     | aml_etl.rates_scraper.scraping_job | Fetched 0 CoinMarketCap pages
+2026-11-15 11:57:53,540 | INFO     | aml_etl.rates_scraper.scraping_job | Saved 270 exchange rates (0 gap-filled)
+2026-11-15 11:57:53,542 | INFO     | rates-scraper | rates-scraper finished in 1.7s
+## Document counts after
+transactions=5078345 exchange_rates=270 analysis_results=5 dataset_summary=1

@@ -1,0 +1,24 @@
+# Interrupted import resumed from the stored row number (HI-Small)
+## Document counts after a complete run
+transactions=5078345 exchange_rates=270 analysis_results=5 dataset_summary=1
+import data dropped
+## First attempt, killed after 45 seconds
+2026-11-15 11:59:43,395 | INFO     | transactions-etl | transactions-etl started
+2026-11-15 11:59:43,444 | INFO     | aml_etl.transactions_etl.import_job | Importing HI-Small_Trans.csv
+## State right after the kill
+status=in_progress next_row_number=1750000 rows_inserted=1750000 rows_already_present=0
+transactions=1850000
+## Second attempt
+2026-11-15 12:00:34,527 | INFO     | transactions-etl | transactions-etl started
+2026-11-15 12:00:34,564 | INFO     | aml_etl.transactions_etl.import_job | HI-Small resumes from row 1750000
+2026-11-15 12:01:19,947 | INFO     | aml_etl.transactions_etl.import_job | HI-Small: row 4250000 reached, 55082 rows/s
+2026-11-15 12:01:33,382 | INFO     | aml_etl.transactions_etl.import_job | HI-Small done: 5078345 rows read, 4978345 inserted, 100000 already present, 0 rejected, 9 exact duplicates kept
+2026-11-15 12:01:44,543 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_is_laundering_1
+2026-11-15 12:01:54,447 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_payment_format_1
+2026-11-15 12:02:04,250 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_timestamp_1
+2026-11-15 12:02:15,270 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_from_bank_1
+2026-11-15 12:02:25,451 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_from_account_1
+2026-11-15 12:02:25,452 | INFO     | transactions-etl | transactions-etl finished in 110.9s
+## Final state
+status=completed next_row_number=5078345 rows_inserted=4978345 rows_already_present=100000
+transactions=5078345 exchange_rates=270 analysis_results=5 dataset_summary=1
