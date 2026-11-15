@@ -29,3 +29,18 @@ def test_failing_job_builder_returns_exit_code_one(caplog):
         raise RuntimeError("cannot build")
 
     assert run_service("svc", build, settings=AmlSettings(_env_file=None)) == 1
+
+
+def test_failure_is_one_readable_line_without_traceback_at_info_level(caplog):
+    settings = AmlSettings(_env_file=None, log_level="INFO")
+    run_service("svc", lambda s: FailingJob(), settings=settings)
+    [record] = [r for r in caplog.records if r.levelno == logging.ERROR]
+    assert record.getMessage() == "svc failed: RuntimeError: boom"
+    assert not record.exc_info
+
+
+def test_failure_keeps_traceback_at_debug_level(caplog):
+    settings = AmlSettings(_env_file=None, log_level="DEBUG")
+    run_service("svc", lambda s: FailingJob(), settings=settings)
+    [record] = [r for r in caplog.records if r.levelno == logging.ERROR]
+    assert record.exc_info

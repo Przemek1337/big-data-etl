@@ -29,3 +29,23 @@ def test_unknown_variant_in_env_is_validation_error(monkeypatch):
     monkeypatch.setenv("DATASET_VARIANTS", "HI-Huge")
     with pytest.raises(ValidationError):
         AmlSettings(_env_file=None)
+
+
+def test_log_level_is_normalised_and_validated(monkeypatch):
+    monkeypatch.setenv("LOG_LEVEL", "debug")
+    assert AmlSettings(_env_file=None).log_level == "DEBUG"
+    monkeypatch.setenv("LOG_LEVEL", "verbose")
+    with pytest.raises(ValidationError, match="LOG_LEVEL"):
+        AmlSettings(_env_file=None)
+
+
+def test_empty_variant_list_is_rejected(monkeypatch):
+    monkeypatch.setenv("DATASET_VARIANTS", " , ")
+    with pytest.raises(ValidationError, match="DATASET_VARIANTS"):
+        AmlSettings(_env_file=None)
+
+
+def test_batch_size_must_be_positive(monkeypatch):
+    monkeypatch.setenv("CSV_BATCH_ROWS", "0")
+    with pytest.raises(ValidationError):
+        AmlSettings(_env_file=None)

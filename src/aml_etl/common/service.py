@@ -20,7 +20,13 @@ def run_service(
     try:
         build_job(active_settings).run()
     except Exception as error:
-        logger.exception("%s failed: %s", service_name, error)
+        logger.error(
+            "%s failed: %s: %s",
+            service_name,
+            type(error).__name__,
+            error,
+            exc_info=logger.isEnabledFor(logging.DEBUG),
+        )
         return 1
     logger.info("%s finished in %.1fs", service_name, time.monotonic() - started)
     return 0

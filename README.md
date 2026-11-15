@@ -351,4 +351,5 @@ docker/Dockerfile               jeden obraz dla wszystkich serwisów
 | Pobieranie z Kaggle kończy się błędem 401 lub 403 | Wpisz `KAGGLE_USERNAME` i `KAGGLE_KEY` do `.env` (token z ustawień konta Kaggle). |
 | Import zatrzymał się albo komputer się wyłączył | Uruchom ponownie `docker compose up`. Import wznowi się od zapamiętanego wiersza. |
 | Brak miejsca na dysku albo powolne działanie | W Docker Desktop zwiększ limit dysku i pamięci (Settings → Resources). Nieużywane obrazy usuwa `docker image prune`. |
+| Serwis kończy się jedną linią `... failed: ...` bez szczegółów | Ustaw `LOG_LEVEL=DEBUG` w `.env` i uruchom serwis ponownie, żeby zobaczyć pełny ślad błędu. |
 | Chcę zacząć od zera | `docker compose down -v` usuwa lokalną bazę i pobrane pliki. Dane w Atlasie zostają. |

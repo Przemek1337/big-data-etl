@@ -1,3 +1,4 @@
+import logging
 import uuid
 from collections.abc import Iterator
 from typing import Any
@@ -7,6 +8,7 @@ from pymongo import MongoClient
 from pymongo.database import Database
 from testcontainers.community.mongodb import MongoDbContainer
 
+from aml_etl.common.logging import ColorFormatter
 from aml_etl.common.settings import AmlSettings
 
 
@@ -40,3 +42,14 @@ def aml_settings(mongo_uri: str) -> Iterator[AmlSettings]:
     client.drop_database(settings.local_database)
     client.drop_database(settings.atlas_database)
     client.close()
+
+
+@pytest.fixture(autouse=True)
+def restore_logging() -> Iterator[None]:
+    root = logging.getLogger()
+    level = root.level
+    yield
+    for handler in list(root.handlers):
+        if isinstance(handler.formatter, ColorFormatter):
+            root.removeHandler(handler)
+    root.setLevel(level)
