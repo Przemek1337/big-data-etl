@@ -5,7 +5,7 @@ from typing import Any
 
 from pymongo.collection import Collection
 
-from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT
+from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT, full_scan
 from aml_etl.common.dataset_variants import DatasetVariant
 from aml_etl.common.formatting import format_count, format_percent
 from aml_etl.common.results import AnalysisId, AnalysisResult
@@ -109,5 +109,5 @@ class BankConcentrationAnalysis:
                 "laundering_count": int(group["laundering_count"]),
                 "laundering_rate": group["laundering_count"] / group["transaction_count"],
             }
-            for group in transactions.aggregate(pipeline, allowDiskUse=True)
+            for group in full_scan(transactions, pipeline)
         ]

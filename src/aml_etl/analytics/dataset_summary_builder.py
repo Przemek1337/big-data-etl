@@ -4,6 +4,7 @@ from typing import Any
 
 from pymongo.collection import Collection
 
+from aml_etl.analytics.analysis import full_scan
 from aml_etl.common.dataset_variants import DatasetVariant
 from aml_etl.common.results import DatasetSummary
 
@@ -69,4 +70,4 @@ class DatasetSummaryBuilder:
                 }
             },
         ]
-        return next(iter(self._transactions.aggregate(pipeline, allowDiskUse=True)), None)
+        return next(full_scan(self._transactions, pipeline), None)

@@ -4,11 +4,13 @@ from typing import Any
 
 from pymongo.collection import Collection
 
-from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT
+from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT, full_scan
 from aml_etl.analytics.statistics import chi_square_test
 from aml_etl.common.dataset_variants import DatasetVariant
 from aml_etl.common.formatting import format_percent
 from aml_etl.common.results import AnalysisId, AnalysisResult
+
+Counts = dict[int, tuple[int, int]]
 
 HOURS_PER_DAY = 24
 WEEKDAY_LABELS = ("Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Ndz")
@@ -24,8 +26,7 @@ class TimePatternAnalysis:
     def compute(
         self, transactions: Collection[dict[str, Any]], variant: DatasetVariant
     ) -> AnalysisResult:
-        by_hour = self._counts(transactions, variant, "$hour")
-        by_weekday = self._counts(transactions, variant, "$isoDayOfWeek")
+        by_hour, by_weekday = self._counts(transactions, variant)
         hour_rows = [self._row("hour", hour, by_hour) for hour in range(HOURS_PER_DAY)]
         weekday_rows = [
             {**self._row("weekday", number, by_weekday), "weekday_label": label}
@@ -51,24 +52,30 @@ class TimePatternAnalysis:
         )
 
     def _counts(
-        self, transactions: Collection[dict[str, Any]], variant: DatasetVariant, operator: str
-    ) -> dict[int, tuple[int, int]]:
+        self, transactions: Collection[dict[str, Any]], variant: DatasetVariant
+    ) -> tuple[Counts, Counts]:
+        moment = {"date": "$timestamp", "timezone": "UTC"}
         pipeline: list[dict[str, Any]] = [
             {"$match": {"dataset_variant": variant.name}},
             {
                 "$group": {
-                    "_id": {operator: {"date": "$timestamp", "timezone": "UTC"}},
+                    "_id": {"hour": {"$hour": moment}, "weekday": {"$isoDayOfWeek": moment}},
                     "transaction_count": {"$sum": 1},
                     "laundering_count": {"$sum": {"$cond": ["$is_laundering", 1, 0]}},
                 }
             },
         ]
-        return {
-            int(group["_id"]): (int(group["transaction_count"]), int(group["laundering_count"]))
-            for group in transactions.aggregate(pipeline, allowDiskUse=True)
-        }
+        by_hour: Counts = {}
+        by_weekday: Counts = {}
+        for group in full_scan(transactions, pipeline):
+            counts = (int(group["transaction_count"]), int(group["laundering_count"]))
+            for target, key in ((by_hour, "hour"), (by_weekday, "weekday")):
+                value = int(group["_id"][key])
+                known = target.get(value, (0, 0))
+                target[value] = (known[0] + counts[0], known[1] + counts[1])
+        return by_hour, by_weekday
 
-    def _row(self, key: str, value: int, counts: dict[int, tuple[int, int]]) -> dict[str, Any]:
+    def _row(self, key: str, value: int, counts: Counts) -> dict[str, Any]:
         transaction_count, laundering_count = counts.get(value, (0, 0))
         return {
             key: value,

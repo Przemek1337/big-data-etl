@@ -4,7 +4,7 @@ from typing import Any
 
 from pymongo.collection import Collection
 
-from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT
+from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT, full_scan
 from aml_etl.analytics.statistics import chi_square_test
 from aml_etl.common.dataset_variants import DatasetVariant
 from aml_etl.common.formatting import format_decimal, format_percent
@@ -59,7 +59,7 @@ class PaymentFormatAnalysis:
                 "laundering_rate": group["laundering_count"]
                 / (group["normal_count"] + group["laundering_count"]),
             }
-            for group in transactions.aggregate(pipeline, allowDiskUse=True)
+            for group in full_scan(transactions, pipeline)
         ]
         return sorted(rows, key=lambda row: (-row["laundering_rate"], row["payment_format"]))
 

@@ -5,7 +5,7 @@ from typing import Any
 from pymongo.collection import Collection
 from scipy import stats
 
-from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT
+from aml_etl.analytics.analysis import NO_LAUNDERING_INSIGHT, full_scan
 from aml_etl.common.dataset_variants import DatasetVariant
 from aml_etl.common.formatting import format_decimal, format_usd
 from aml_etl.common.results import AnalysisId, AnalysisResult, StatisticalTest
@@ -76,10 +76,7 @@ class AmountAnalysis:
                 }
             },
         ]
-        return {
-            bool(group["_id"]): group
-            for group in transactions.aggregate(pipeline, allowDiskUse=True)
-        }
+        return {bool(group["_id"]): group for group in full_scan(transactions, pipeline)}
 
     def _median(self, group: dict[str, Any] | None) -> float:
         return float(group["percentiles"][MEDIAN_INDEX]) if group else 0.0
@@ -118,29 +115,33 @@ class AmountAnalysis:
                 "normal_count": int(row["normal_count"]),
                 "laundering_count": int(row["laundering_count"]),
             }
-            for row in transactions.aggregate(pipeline, allowDiskUse=True)
+            for row in full_scan(transactions, pipeline)
         ]
 
-    def _amounts(
-        self, transactions: Collection[dict[str, Any]], query: dict[str, Any]
-    ) -> list[float]:
-        cursor = transactions.find(query, {"_id": 0, "amount_paid_usd": 1})
-        return [float(document["amount_paid_usd"]) for document in cursor]
+    def _test_samples(
+        self, transactions: Collection[dict[str, Any]], variant: DatasetVariant
+    ) -> tuple[list[float], list[float]]:
+        sampled_row = {"row_number": {"$mod": [self._normal_sample_modulus, 0]}}
+        pipeline: list[dict[str, Any]] = [
+            {
+                "$match": {
+                    "dataset_variant": variant.name,
+                    "$or": [{"is_laundering": True}, sampled_row],
+                }
+            },
+            {"$project": {"_id": 0, "amount_paid_usd": 1, "is_laundering": 1}},
+        ]
+        laundering: list[float] = []
+        normal: list[float] = []
+        for document in full_scan(transactions, pipeline):
+            target = laundering if document["is_laundering"] else normal
+            target.append(float(document["amount_paid_usd"]))
+        return laundering, normal
 
     def _mann_whitney(
         self, transactions: Collection[dict[str, Any]], variant: DatasetVariant
     ) -> StatisticalTest | None:
-        laundering = self._amounts(
-            transactions, {"dataset_variant": variant.name, "is_laundering": True}
-        )
-        normal = self._amounts(
-            transactions,
-            {
-                "dataset_variant": variant.name,
-                "is_laundering": False,
-                "row_number": {"$mod": [self._normal_sample_modulus, 0]},
-            },
-        )
+        laundering, normal = self._test_samples(transactions, variant)
         if not laundering or not normal:
             return None
         result = stats.mannwhitneyu(laundering, normal, alternative="two-sided")

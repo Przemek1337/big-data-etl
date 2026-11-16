@@ -4,6 +4,7 @@ from typing import Any
 
 from pymongo.collection import Collection
 
+from aml_etl.analytics.analysis import full_scan
 from aml_etl.analytics.statistics import chi_square_test, odds_ratio
 from aml_etl.common.dataset_variants import DatasetVariant
 from aml_etl.common.formatting import format_decimal, format_percent
@@ -70,7 +71,7 @@ class CrossCurrencyAnalysis:
         ]
         return {
             bool(group["_id"]): (int(group["normal_count"]), int(group["laundering_count"]))
-            for group in transactions.aggregate(pipeline, allowDiskUse=True)
+            for group in full_scan(transactions, pipeline)
         }
 
     def _row(self, is_cross: bool, counts: dict[bool, tuple[int, int]]) -> dict[str, Any]:
