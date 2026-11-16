@@ -38,7 +38,7 @@ Dashboard jest pod adresem <http://localhost:8050>.
 
 - Docker z Docker Compose (Docker Desktop na Windows i macOS).
 - Co najmniej 8 GB pamięci przydzielonej Dockerowi; zalecane 16 GB RAM w komputerze.
-- Wolne miejsce na dysku: ok. 20 GB dla wariantów Medium (6 GB plików i ok. 8,5 GB bazy, plus zapas), ok. 2 GB dla trybu próbnego.
+- Wolne miejsce na dysku: ok. 20 GB dla wariantów Medium (6 GB plików i ok. 10 GB bazy, plus zapas), ok. 2 GB dla trybu próbnego.
 - Konto Kaggle nie jest potrzebne, bo zbiór jest publiczny. Jeśli Kaggle zacznie wymagać logowania, wpisz `KAGGLE_USERNAME` i `KAGGLE_KEY` do `.env`.
 
 ### Uruchomienie
@@ -55,6 +55,8 @@ Serwisy uruchamiają się po kolei i każdy czeka na poprawne zakończenie poprz
 3. `transactions-etl` czyści transakcje, przelicza kwoty na USD i ładuje je do lokalnego MongoDB.
 4. `analytics` liczy pięć analiz i publikuje wyniki w Atlasie.
 5. `dashboard` pokazuje wyniki pod adresem <http://localhost:8050>.
+
+Pełny przebieg na wariantach Medium trwa ok. 2,5 godziny na laptopie z 8 GB pamięci dla Dockera: pobranie plików 5 min, scraping 1–2 min, import 50 min, analizy 90 min. Dokładne liczby są w `docs/report/evidence/counts.md`.
 
 Ponowne `docker compose up` niczego nie duplikuje: pliki nie są pobierane drugi raz, scraper nie pobiera żadnej strony, a import jest pomijany. Import przerwany w połowie wznawia się od zapamiętanego numeru wiersza.
 
