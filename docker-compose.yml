@@ -1,0 +1,72 @@
+x-aml-service: &aml-service
+  image: aml-etl:local
+  build:
+    context: .
+    dockerfile: docker/Dockerfile
+  env_file:
+    - path: .env
+      required: false
+  environment:
+    LOCAL_MONGO_URI: mongodb://mongo-local:27017
+    ATLAS_URI: ${ATLAS_URI:-mongodb://mongo-local:27017}
+    DATA_DIR: /data
+    KAGGLEHUB_CACHE: /data/.kagglehub
+  volumes:
+    - raw-data:/data
+
+services:
+  mongo-local:
+    image: mongo:7.0
+    ports:
+      - "${LOCAL_MONGO_HOST_PORT:-27018}:27017"
+    volumes:
+      - mongo-local-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  dataset-extractor:
+    <<: *aml-service
+    command: python -m aml_etl.dataset_extractor
+
+  rates-scraper:
+    <<: *aml-service
+    command: python -m aml_etl.rates_scraper
+    depends_on:
+      dataset-extractor:
+        condition: service_completed_successfully
+      mongo-local:
+        condition: service_healthy
+
+  transactions-etl:
+    <<: *aml-service
+    command: python -m aml_etl.transactions_etl
+    depends_on:
+      rates-scraper:
+        condition: service_completed_successfully
+      mongo-local:
+        condition: service_healthy
+
+  analytics:
+    <<: *aml-service
+    command: python -m aml_etl.analytics
+    depends_on:
+      transactions-etl:
+        condition: service_completed_successfully
+
+  dashboard:
+    <<: *aml-service
+    command: gunicorn aml_etl.dashboard.wsgi:server --bind 0.0.0.0:8050 --workers 2
+    ports:
+      - "${DASHBOARD_HOST_PORT:-8050}:8050"
+    depends_on:
+      analytics:
+        condition: service_completed_successfully
+        required: false
+    restart: unless-stopped
+
+volumes:
+  mongo-local-data:
+  raw-data:

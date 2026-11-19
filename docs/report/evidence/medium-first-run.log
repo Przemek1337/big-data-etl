@@ -1,0 +1,72 @@
+# First full run on HI-Medium and LI-Medium (2026-11-15): extraction, scraping and import
+2026-11-15 12:02:56,820 | INFO     | dataset-extractor | dataset-extractor started
+2026-11-15 12:02:56,821 | INFO     | aml_etl.dataset_extractor.raw_dataset_extractor | Downloading HI-Medium_Trans.csv
+2026-11-15 12:05:36,216 | INFO     | aml_etl.dataset_extractor.extraction_job | HI-Medium_Trans.csv ready: 2.82 GB
+2026-11-15 12:05:36,218 | INFO     | aml_etl.dataset_extractor.raw_dataset_extractor | Downloading LI-Medium_Trans.csv
+2026-11-15 12:07:48,983 | INFO     | aml_etl.dataset_extractor.extraction_job | LI-Medium_Trans.csv ready: 2.77 GB
+2026-11-15 12:07:48,984 | INFO     | dataset-extractor | dataset-extractor finished in 292.2s
+2026-11-15 12:07:53,615 | INFO     | rates-scraper | rates-scraper started
+2026-11-15 12:08:15,421 | INFO     | aml_etl.rates_scraper.scraping_job | Transactions span 2022-09-01 to 2022-09-28
+2026-11-15 12:08:27,238 | INFO     | aml_etl.rates_scraper.scraping_job | Fetched 10 x-rates pages
+2026-11-15 12:08:40,134 | INFO     | aml_etl.rates_scraper.scraping_job | Fetched 10 CoinMarketCap pages
+2026-11-15 12:08:40,331 | INFO     | aml_etl.rates_scraper.scraping_job | Saved 420 exchange rates (0 gap-filled)
+2026-11-15 12:08:40,333 | INFO     | rates-scraper | rates-scraper finished in 46.7s
+2026-11-15 12:08:43,576 | INFO     | transactions-etl | transactions-etl started
+2026-11-15 12:08:43,676 | INFO     | aml_etl.transactions_etl.import_job | Importing HI-Medium_Trans.csv
+2026-11-15 12:10:26,413 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 2500000 reached, 24333 rows/s
+2026-11-15 12:12:04,170 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 5000000 reached, 24937 rows/s
+2026-11-15 12:13:34,827 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 7500000 reached, 25757 rows/s
+2026-11-15 12:14:58,346 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 10000000 reached, 26688 rows/s
+2026-11-15 12:16:52,501 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 12500000 reached, 25569 rows/s
+2026-11-15 12:18:47,644 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 15000000 reached, 24834 rows/s
+2026-11-15 12:20:40,762 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 17500000 reached, 24403 rows/s
+2026-11-15 12:22:47,222 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 20000000 reached, 23708 rows/s
+2026-11-15 12:24:49,916 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 22500000 reached, 23285 rows/s
+2026-11-15 12:26:59,250 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 25000000 reached, 22818 rows/s
+2026-11-15 12:29:21,491 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 27500000 reached, 22215 rows/s
+2026-11-15 12:31:31,834 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium: row 30000000 reached, 21926 rows/s
+2026-11-15 12:33:06,870 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium done: 31898238 rows read, 31898238 inserted, 0 already present, 0 rejected, 20 exact duplicates kept
+2026-11-15 12:33:06,881 | INFO     | aml_etl.transactions_etl.import_job | Importing LI-Medium_Trans.csv
+2026-11-15 12:34:53,411 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 2500000 reached, 23466 rows/s
+2026-11-15 12:36:34,433 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 5000000 reached, 24089 rows/s
+2026-11-15 12:38:30,422 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 7500000 reached, 23179 rows/s
+2026-11-15 12:40:17,195 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 10000000 reached, 23237 rows/s
+2026-11-15 12:42:20,839 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 12500000 reached, 22563 rows/s
+2026-11-15 12:44:11,117 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 15000000 reached, 22581 rows/s
+2026-11-15 12:45:55,611 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 17500000 reached, 22763 rows/s
+2026-11-15 12:48:21,581 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 20000000 reached, 21863 rows/s
+2026-11-15 12:50:38,487 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 22500000 reached, 21394 rows/s
+2026-11-15 12:52:43,540 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 25000000 reached, 21245 rows/s
+2026-11-15 12:55:02,671 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 27500000 reached, 20898 rows/s
+2026-11-15 12:57:19,027 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium: row 30000000 reached, 20657 rows/s
+2026-11-15 12:58:28,017 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium done: 31251483 rows read, 31251483 inserted, 0 already present, 0 rejected, 14 exact duplicates kept
+2026-11-15 12:58:28,031 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_is_laundering_1
+2026-11-15 12:58:28,032 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_payment_format_1
+2026-11-15 12:58:28,033 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_timestamp_1
+2026-11-15 12:58:28,034 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_from_account_1
+2026-11-15 12:58:28,034 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_from_bank_1
+2026-11-15 12:58:28,037 | INFO     | transactions-etl | transactions-etl finished in 2984.7s
+
+# Analytics on HI-Medium and LI-Medium (2026-11-16, after the performance fix)
+2026-11-16 20:28:16,962 | INFO     | analytics | analytics started
+2026-11-16 20:35:35,429 | INFO     | aml_etl.analytics.analytics_job | HI-Medium: 31898238 transactions, 35230 laundering
+2026-11-16 20:49:49,740 | INFO     | aml_etl.analytics.analytics_job | HI-Medium / amounts computed in 854.4s: Typowa transakcja prania jest 7,2× większa od zwykłej (mediana $6 068 wobec $845).
+2026-11-16 20:55:50,243 | INFO     | aml_etl.analytics.analytics_job | HI-Medium / payment_formats computed in 360.5s: Najwyższy odsetek prania ma forma ACH: 0,79% transakcji, czyli 7,2× więcej niż średnio.
+2026-11-16 21:00:33,846 | INFO     | aml_etl.analytics.analytics_job | HI-Medium / time_patterns computed in 283.6s: Najwyższy odsetek prania przypada na godzinę 11:00–12:00: 0,18% transakcji.
+2026-11-16 21:04:56,677 | INFO     | aml_etl.analytics.analytics_job | HI-Medium / cross_currency computed in 262.8s: Wśród transakcji z przewalutowaniem nie ma ani jednej oznaczonej jako pranie.
+2026-11-16 21:10:53,416 | INFO     | aml_etl.analytics.analytics_job | HI-Medium / banks computed in 356.7s: 1% kont nadawców odpowiada za 92,5% wszystkich transakcji prania.
+2026-11-16 21:16:56,814 | INFO     | aml_etl.analytics.analytics_job | LI-Medium: 31251483 transactions, 16041 laundering
+2026-11-16 21:32:11,972 | INFO     | aml_etl.analytics.analytics_job | LI-Medium / amounts computed in 915.5s: Typowa transakcja prania jest 3,7× większa od zwykłej (mediana $3 130 wobec $843).
+2026-11-16 21:36:38,632 | INFO     | aml_etl.analytics.analytics_job | LI-Medium / payment_formats computed in 266.6s: Najwyższy odsetek prania ma forma ACH: 0,31% transakcji, czyli 6,0× więcej niż średnio.
+2026-11-16 21:42:06,489 | INFO     | aml_etl.analytics.analytics_job | LI-Medium / time_patterns computed in 327.9s: Najwyższy odsetek prania przypada na godzinę 12:00–13:00: 0,07% transakcji.
+2026-11-16 21:46:35,944 | INFO     | aml_etl.analytics.analytics_job | LI-Medium / cross_currency computed in 269.5s: Wśród transakcji z przewalutowaniem nie ma ani jednej oznaczonej jako pranie.
+2026-11-16 21:56:41,033 | INFO     | aml_etl.analytics.analytics_job | LI-Medium / banks computed in 605.1s: Wszystkie transakcje prania wychodzą z 0,53% kont nadawców (10 488 z 1 969 950).
+2026-11-16 21:56:41,702 | INFO     | aml_etl.analytics.analytics_job | Published variants: HI-Medium, LI-Medium
+2026-11-16 21:56:42,444 | INFO     | analytics | analytics finished in 5306.4s
+
+# Document counts after the first full run
+transactions[HI-Medium]=31898238
+transactions[LI-Medium]=31251483
+exchange_rates=420
+analysis_results[Medium]=10
+dataset_summary[Medium]=2

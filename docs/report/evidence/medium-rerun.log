@@ -1,0 +1,37 @@
+# Second run on HI-Medium and LI-Medium: extraction, scraping and import started again
+## Document counts before
+transactions[HI-Medium]=31898238
+transactions[LI-Medium]=31251483
+exchange_rates=420
+analysis_results[Medium]=10
+dataset_summary[Medium]=2
+## dataset-extractor
+2026-11-16 21:59:37,680 | INFO     | dataset-extractor | dataset-extractor started
+2026-11-16 21:59:37,680 | INFO     | aml_etl.dataset_extractor.raw_dataset_extractor | HI-Medium_Trans.csv already extracted, skipping download
+2026-11-16 21:59:37,680 | INFO     | aml_etl.dataset_extractor.extraction_job | HI-Medium_Trans.csv ready: 2.82 GB
+2026-11-16 21:59:37,680 | INFO     | aml_etl.dataset_extractor.raw_dataset_extractor | LI-Medium_Trans.csv already extracted, skipping download
+2026-11-16 21:59:37,680 | INFO     | aml_etl.dataset_extractor.extraction_job | LI-Medium_Trans.csv ready: 2.77 GB
+2026-11-16 21:59:37,680 | INFO     | dataset-extractor | dataset-extractor finished in 0.0s
+## rates-scraper
+2026-11-16 21:59:41,760 | INFO     | rates-scraper | rates-scraper started
+2026-11-16 22:00:38,787 | INFO     | aml_etl.rates_scraper.scraping_job | Transactions span 2022-09-01 to 2022-09-28
+2026-11-16 22:00:41,167 | INFO     | aml_etl.rates_scraper.scraping_job | Fetched 0 x-rates pages
+2026-11-16 22:00:41,175 | INFO     | aml_etl.rates_scraper.scraping_job | Fetched 0 CoinMarketCap pages
+2026-11-16 22:00:41,591 | INFO     | aml_etl.rates_scraper.scraping_job | Saved 420 exchange rates (0 gap-filled)
+2026-11-16 22:00:42,404 | INFO     | rates-scraper | rates-scraper finished in 60.7s
+## transactions-etl
+2026-11-16 22:00:54,945 | INFO     | transactions-etl | transactions-etl started
+2026-11-16 22:00:55,074 | INFO     | aml_etl.transactions_etl.import_job | HI-Medium already imported, skipping
+2026-11-16 22:00:55,078 | INFO     | aml_etl.transactions_etl.import_job | LI-Medium already imported, skipping
+2026-11-16 22:00:55,093 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_is_laundering_1
+2026-11-16 22:00:55,094 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_payment_format_1
+2026-11-16 22:00:55,095 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_timestamp_1
+2026-11-16 22:00:55,096 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_from_bank_1
+2026-11-16 22:00:55,096 | INFO     | aml_etl.transactions_etl.transaction_indexes | Index ready: dataset_variant_1_from_account_1
+2026-11-16 22:00:55,097 | INFO     | transactions-etl | transactions-etl finished in 0.2s
+## Document counts after
+transactions[HI-Medium]=31898238
+transactions[LI-Medium]=31251483
+exchange_rates=420
+analysis_results[Medium]=10
+dataset_summary[Medium]=2

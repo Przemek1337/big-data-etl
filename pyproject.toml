@@ -1,0 +1,66 @@
+[project]
+name = "aml-etl"
+version = "0.1.0"
+description = "AML transactions ETL pipeline with exchange-rate scraping, analytics and a Dash dashboard"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "colorama>=0.4.6",
+    "dash>=4.5.0",
+    "gunicorn>=27.0.1",
+    "httpx>=0.28.1",
+    "kagglehub>=1.0.3",
+    "numpy>=2.5.4",
+    "plotly>=7.1.0",
+    "polars>=2.1.0",
+    "pydantic-settings",
+    "pymongo>=4.20.0",
+    "scipy>=1.18.1",
+    "selectolax>=1.0.2",
+    "tzdata>=2026.6",
+]
+
+[build-system]
+requires = ["uv_build>=0.9,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "aml_etl"
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "mypy",
+    "pytest",
+    "testcontainers[mongodb]",
+    "pre-commit",
+    "types-colorama>=0.4.15.20260508",
+    "scipy-stubs>=1.18.1.1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["docs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "N", "RUF", "PTH", "ERA"]
+allowed-confusables = ["×", "–"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["aml_etl"]
+known-third-party = ["support"]
+
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["scripts/tests"]
+
+[[tool.mypy.overrides]]
+module = ["kagglehub", "kagglehub.*", "plotly", "plotly.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib -p no:dash"
+pythonpath = ["scripts", "tests"]
+testpaths = ["scripts", "tests"]
+markers = ["integration: needs Docker"]
