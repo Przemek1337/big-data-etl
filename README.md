@@ -27,15 +27,15 @@ flowchart LR
 
     subgraph pipeline["Pipeline w Dockerze"]
         direction LR
-        extract["1. Pobranie danych<br/>pliki CSV, ok. 6 GB"]
-        scrape["2. Scraping kursów<br/>15 walut, kurs dzienny"]
-        etl["3. ETL<br/>czyszczenie, walidacja,<br/>przeliczenie na USD"]
-        analytics["4. Analizy<br/>agregacje i testy<br/>statystyczne"]
+        extract["Pobranie danych<br/>pliki CSV, ok. 6 GB"]
+        scrape["Scraping kursów<br/>15 walut, kurs dzienny"]
+        etl["ETL<br/>czyszczenie, walidacja,<br/>przeliczenie na USD"]
+        analytics["Analizy<br/>agregacje i testy<br/>statystyczne"]
         local[("Lokalny MongoDB<br/>63 mln transakcji")]
     end
 
     atlas[("MongoDB Atlas<br/>kursy i wyniki")]
-    dashboard["5. Dashboard<br/>localhost:8050"]
+    dashboard["Dashboard<br/>localhost:8050"]
 
     kaggle --> extract --> etl
     web --> scrape --> atlas
