@@ -41,7 +41,7 @@ Dwie bazy mają różne role:
 - **Lokalny MongoDB** (kontener) trzyma surowe transakcje: 63 mln dokumentów, ok. 9,9 GB razem z indeksami. To za dużo na darmowy klaster w chmurze.
 - **MongoDB Atlas** (darmowy klaster M0, limit 512 MB) trzyma tylko kursy walut i wyniki analiz. Dzięki temu dashboard można uruchomić na dowolnym komputerze bez pobierania danych.
 
-Diagramy architektury, przepływu ETL, schematu kolekcji i ponownego uruchomienia importu są w pliku `README.md` (sekcja „Architektura”). <<DO UZUPEŁNIENIA: wklej obrazy czterech diagramów z README, np. zrzuty z podglądu na GitHubie>>
+Diagram działania systemu jest w pliku `README.md` (sekcja „Jak to działa”). <<DO UZUPEŁNIENIA: wklej obraz diagramu z README, np. zrzut z podglądu na GitHubie>>
 
 ## 3. Pobieranie danych i web scraping
 

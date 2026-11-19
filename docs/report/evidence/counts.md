@@ -2,7 +2,7 @@
 
 Maszyna: laptop z Windows 11, Docker Desktop z 8 GB pamięci. Kursy i wyniki zapisywane do lokalnego
 kontenera MongoDB w roli Atlasa (`ATLAS_URI=mongodb://mongo-local:27017`).
-Przebieg z prawdziwym klastrem Atlas wykonuje autor (README, sekcja „Samouczek: MongoDB Atlas”).
+Wyniki zostały następnie skopiowane do klastra MongoDB Atlas, z którego czyta dashboard.
 
 ## Pliki surowe
 
